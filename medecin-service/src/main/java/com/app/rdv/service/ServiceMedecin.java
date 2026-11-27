@@ -6,10 +6,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class ServiceMedecin implements IServiceMedecin {
-    MedecinRepository medecinRepository;
+    private final MedecinRepository medecinRepository;
+
     @Override
     public Medecin ajouterMedecin(Medecin medecin) {
         return medecinRepository.save(medecin);
@@ -18,5 +21,10 @@ public class ServiceMedecin implements IServiceMedecin {
     @Override
     public List<Medecin> getAllMedecins() {
         return medecinRepository.findAll();
+    }
+
+    @Override
+    public Optional<Medecin> getMedecinById(Integer id) {
+        return medecinRepository.findById(id);
     }
 }

@@ -16,11 +16,6 @@ import java.util.Optional;
 public class PatientRestController {
     IServicePatient iServicePatient;
 
-    /*@GetMapping
-    public List<PatientDTO> getAllPatients() {
-        return iServicePatient.getAllPatients();
-    }*/
-
     @GetMapping
     public Page<PatientDTO> getAllPatient(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "5") int size) {
@@ -33,19 +28,20 @@ public class PatientRestController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> getPatient(@PathVariable int id){
+    public ResponseEntity<?> getPatient(@PathVariable int id) {
         Optional<PatientDTO> patient = iServicePatient.getPatientById(id);
-        if(patient.isPresent())
-            return new ResponseEntity<>(patient, HttpStatus.FOUND);
+        if (patient.isPresent()) {
+            return ResponseEntity.ok(patient.get());
+        }
         return new ResponseEntity<>("ce patient n'existe pas", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("addmaladie")
-    public ResponseEntity<?> addmaladie(@RequestParam int idp, @RequestParam int idm){
-        PatientDTO patient = iServicePatient.addMaladieToPatient(idp,idm);
-        if(patient!=null)
+    public ResponseEntity<?> addmaladie(@RequestParam int idp, @RequestParam int idm) {
+        PatientDTO patient = iServicePatient.addMaladieToPatient(idp, idm);
+        if (patient != null) {
             return new ResponseEntity<>(patient, HttpStatus.CREATED);
-        else
-            return new ResponseEntity<>("cette maladie est déjà ajouté au patient", HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("cette maladie est déjà ajouté au patient", HttpStatus.CONFLICT);
     }
 }
